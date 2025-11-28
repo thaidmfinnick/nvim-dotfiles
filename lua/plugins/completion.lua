@@ -19,6 +19,14 @@ return {
             end,
           },
         },
+        config = function()
+          local ls = require 'luasnip'
+          vim.keymap.set({ 'i', 's' }, '<C-e>', function()
+            if ls.choice_active() then
+              ls.change_choice(1)
+            end
+          end, { silent = true })
+        end,
       },
     },
     version = '1.*',
@@ -30,15 +38,9 @@ return {
         ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
         ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
         ['<C-y>'] = { 'accept', 'fallback' },
-        ['<C-Space>'] = { 'show', 'fallback' },
+        ['<C-s>'] = { 'show_and_insert', 'fallback' },
         ['<C-l>'] = { 'snippet_forward', 'fallback' },
         ['<C-h>'] = { 'snippet_backward', 'fallback' },
-        ['<C-e>'] = function()
-          local luasnip = require('luasnip')
-          if luasnip.choice_active() then
-            luasnip.change_choice(1)
-          end
-        end,
       },
       cmdline = {
         keymap = {
@@ -51,7 +53,7 @@ return {
             auto_show = true,
           },
           list = {
-            selection = { preselect = false },
+            selection = { preselect = true },
           },
         },
       },
@@ -60,7 +62,7 @@ return {
           range = 'full',
         },
         list = {
-          selection = { preselect = false, auto_insert = true },
+          selection = { preselect = true, auto_insert = true },
         },
         accept = {
           dot_repeat = true,
@@ -77,7 +79,7 @@ return {
         },
         documentation = {
           auto_show = true,
-          auto_show_delay_ms = 500,
+          auto_show_delay_ms = 300,
           window = {
             border = 'single',
           },
@@ -85,29 +87,50 @@ return {
       },
       signature = { enabled = true },
       appearance = {
-        use_nvim_cmp_as_default = true,
+        highlight_ns = vim.api.nvim_create_namespace 'blink_cmp',
+        use_nvim_cmp_as_default = false,
         nerd_font_variant = 'mono',
-      },
-      sources = {
-        default = { 'lsp', 'path', 'luasnip' },
+        kind_icons = {
+          Text = '  ',
+          Method = '  ',
+          Function = '  ',
+          Constructor = '  ',
+
+          Field = '  ',
+          Variable = '  ',
+          Property = '  ',
+
+          Class = '  ',
+          Interface = '  ',
+          Struct = '  ',
+          Module = '  ',
+
+          Unit = ' ',
+          Value = '  ',
+          Enum = '  ',
+          EnumMember = '  ',
+
+          Keyword = '  ',
+          Constant = '  ',
+
+          Snippet = '  ',
+          Color = '  ',
+          File = '  ',
+          Reference = '  ',
+          Folder = '  ',
+          Event = ' ',
+          Operator = '  ',
+          TypeParameter = '  ',
+        },
       },
       snippets = { preset = 'luasnip' },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
+      },
     },
     opts_extend = { 'sources.default' },
     config = function(_, opts)
-      -- Setup LuaSnip
-      local luasnip = require('luasnip')
-      luasnip.config.setup {}
-      
-      -- Setup blink.cmp
       require('blink.cmp').setup(opts)
-      
-      -- Set up choice navigation keymap
-      vim.keymap.set({ 'i', 's' }, '<C-E>', function()
-        if luasnip.choice_active() then
-          luasnip.change_choice(1)
-        end
-      end, { silent = true })
     end,
   },
 }
