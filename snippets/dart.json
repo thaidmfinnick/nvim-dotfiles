@@ -1,0 +1,60 @@
+{
+  "Design System Button": {
+    "prefix": "ds.b",
+    "body": [
+      "design_system.Button(",
+      "  text: \"${1:placeholder}\",",
+      "  type: design_system.ButtonType.${2|primary,secondary,secondaryLight,success,danger,textGrey,textColor,textSuccess,textDanger,filledTonalPrimary,filledTonalSuccess,filledTonalDanger,linkGrey,linkColor,linkInfo,linkSuccess,linkDanger|},",
+      "  size: design_system.ButtonSize.${3|small,medium,large|},",
+      "  onTap: () {",
+      "    $4",
+      "  }",
+      ")"
+    ],
+    "description": "Inserts a Design System Button with selectable type and size and icon"
+  },
+  "Design System Checkbox": {
+    "prefix": "ds.c",
+    "body": [
+      "design_system.Checkbox(",
+      "  value: ${1:checked},",
+      "  onChanged: (${2:value}) {$3}",
+      ")"
+    ],
+    "description": "Inserts a Design System Checkbox"
+  },
+  "Design System TriState Checkbox": {
+    "prefix": "ds.tc",
+    "body": [
+      "design_system.TriStateCheckbox(",
+      "  value: ${1:checked},",
+      "  onChanged: () {$2}",
+      ")"
+    ],
+    "description": "Inserts a Design System TriState Checkbox"
+  },
+  "Design System Switch": {
+    "prefix": "ds.s",
+    "body": [
+      "design_system.Switch(",
+      "  initialValue: ${1:basicSwitch},",
+      "  onChanged: (${2:value}) {$3},",
+      ")"
+    ],
+    "description": "Inserts a Design System Switch"
+  },
+  "Design System Radio Group": {
+    "prefix": "ds.rg",
+    "body": [
+      "design_system.RadioGroup<${1:type}>(",
+      "  groupValue: $2,",
+      "  onChanged: (value) {},",
+      "  items: const [",
+      "    RadioGroupItem(value: $3, label: \"$4\"),",
+      "    RadioGroupItem(value: $5, label: \"$6\"),",
+      "  ],",
+      ")"
+    ],
+    "description": "Inserts a simple DS RadioGroup with text labels only"
+  }
+}
