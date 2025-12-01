@@ -119,7 +119,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     end, { desc = '[S]earch [E]rror Diagnostics' })
     vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
     vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-    vim.keymap.set('n', '<leader><leader>', function()
+    vim.keymap.set('n', '<leader>sb', function()
       builtin.buffers {
         sort_lastused = true,
       }

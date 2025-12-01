@@ -32,12 +32,13 @@ return {
     version = '1.*',
     opts = {
       keymap = {
-        preset = 'default',
+        -- preset = 'default',
         ['<C-n>'] = { 'select_next', 'fallback' },
         ['<C-p>'] = { 'select_prev', 'fallback' },
         ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
         ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
         ['<C-y>'] = { 'accept', 'fallback' },
+        ['<CR>'] = { 'select_accept_and_enter', 'fallback' },
         ['<C-s>'] = { 'show_and_insert', 'fallback' },
         ['<C-l>'] = { 'snippet_forward', 'fallback' },
         ['<C-h>'] = { 'snippet_backward', 'fallback' },
@@ -46,7 +47,7 @@ return {
         keymap = {
           ['<C-p>'] = { 'select_prev', 'fallback' },
           ['<C-n>'] = { 'select_next', 'fallback' },
-          ['<CR>'] = {},
+          ['<CR>'] = { 'select_accept_and_enter', 'fallback' },
         },
         completion = {
           menu = {
