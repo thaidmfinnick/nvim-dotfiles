@@ -55,10 +55,15 @@ return {
       vim.keymap.set(
         'n',
         '<leader>fd',
-        '<Cmd>FlutterRun -d macos --flavor dev --dart-define=FLAVOR=dev<CR>',
+        '<Cmd>FlutterRun -d macos --flavor dev --dart-define=FLAVOR=dev --dart-define=PLATFORM=desktop<CR>',
         { desc = '[F]lutter Run [D]ev Flavor for Desktop' }
       )
-      vim.keymap.set('n', '<leader>fr', '<Cmd>FlutterRun --flavor dev --dart-define=FLAVOR=dev<CR>', { desc = '[F]lutter Run [D]ev Flavor' })
+      vim.keymap.set(
+        'n',
+        '<leader>fr',
+        '<Cmd>FlutterRun --flavor dev --dart-define=FLAVOR=dev --dart-define=PLATFORM=mobile<CR>',
+        { desc = '[F]lutter Run [D]ev Flavor' }
+      )
       vim.keymap.set(
         'n',
         '<leader>fw',

@@ -9,18 +9,46 @@ return {
   {
     'stevearc/oil.nvim',
     opts = {
+      float = {
+        -- Padding around the floating window
+        padding = 2,
+        -- max_width and max_height can be integers or a float between 0 and 1
+        -- max_width = 0,
+        -- max_height = 0,
+        -- 1. Add a border here (options: "rounded", "single", "double", "solid", "shadow")
+        border = 'rounded',
+        win_options = {
+          winblend = 0,
+        },
+
+        get_win_title = function(winid)
+          local buf = vim.api.nvim_win_get_buf(winid)
+          local name = vim.api.nvim_buf_get_name(buf)
+
+          -- Oil buffer names start with "oil://", we strip that for a clean path
+          if name:sub(1, 6) == 'oil://' then
+            name = name:sub(7)
+          end
+
+          -- Return the path (optional: add spaces for padding)
+          return ' ' .. name .. ' '
+        end,
+
+        -- preview_split: Split direction: "auto", "left", "right", "above", "below".
+        preview_split = 'auto',
+
+        override = function(conf)
+          return conf
+        end,
+      },
       view_options = {
-        -- Show files and directories that start with "."
         show_hidden = true,
-        -- This function defines what is considered a "hidden" file
         is_hidden_file = function(name, _)
           return vim.startswith(name, '.')
         end,
-        -- so you may want to set to false if you work with large directories.
+
         natural_order = false,
         sort = {
-          -- sort order can be "asc" or "desc"
-          -- see :help oil-columns to see which columns are sortable
           { 'type', 'asc' },
           { 'name', 'asc' },
         },
