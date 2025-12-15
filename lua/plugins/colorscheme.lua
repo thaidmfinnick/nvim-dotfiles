@@ -12,7 +12,7 @@ return {
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight'
+      -- vim.cmd.colorscheme 'tokyonight'
 
       -- You can configure highlights by doing something like:
       -- vim.cmd.hi 'Comment gui=none'
@@ -37,7 +37,7 @@ return {
     name = 'catppuccin',
     priority = 1000,
     init = function()
-      -- vim.cmd.colorscheme 'catppuccin-mocha'
+      vim.cmd.colorscheme 'catppuccin-mocha'
     end,
     config = function()
       require('catppuccin').setup {

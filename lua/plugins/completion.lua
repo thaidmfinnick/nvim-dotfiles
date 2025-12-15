@@ -47,14 +47,14 @@ return {
         keymap = {
           ['<C-p>'] = { 'select_prev', 'fallback' },
           ['<C-n>'] = { 'select_next', 'fallback' },
-          ['<CR>'] = { 'select_accept_and_enter', 'fallback' },
+          ['<CR>'] = { 'accept_and_enter', 'fallback' },
         },
         completion = {
           menu = {
             auto_show = true,
           },
           list = {
-            selection = { preselect = true },
+            selection = { preselect = false },
           },
         },
       },
