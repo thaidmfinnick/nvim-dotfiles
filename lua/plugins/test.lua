@@ -19,11 +19,8 @@ return {
           end,
         },
         require 'neotest-dart' {
-          command = 'flutter', -- Command being used to run tests. Defaults to `flutter`
-          -- Change it to `fvm flutter` if using FVM
-          -- change it to `dart` for Dart only tests
-          use_lsp = true, -- When set Flutter outline information is used when constructing test name.
-          -- Useful when using custom test names with @isTest annotation
+          command = 'flutter',
+          use_lsp = true,
           custom_test_method_names = {},
         },
       },
@@ -35,7 +32,13 @@ return {
     local neotest = require 'neotest'
     local map = vim.keymap.set
     map('n', '<leader>nr', function()
-      neotest.run.run()
+      local current_filetype = vim.api.nvim_get_option_value('filetype', { buf = 0 })
+
+      if current_filetype == 'dart' then
+        require('neotest').run.run { extra_args = { '--flavor dev', '--dart-define=FLAVOR=dev', '--dart-define=PLATFORM=desktop', '--dart-define=SERVER=dev' } }
+      else
+        require('neotest').run.run()
+      end
     end, { desc = 'Run nearest test' })
     map('n', '<leader>nf', function()
       neotest.run.run(vim.fn.expand '%')

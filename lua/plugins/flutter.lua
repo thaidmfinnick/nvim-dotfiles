@@ -49,21 +49,58 @@ return {
     root_patterns = { 'mise.toml' },
     config = function(_, opts)
       require('flutter-tools').setup(opts)
-
       local extensions = require('telescope').extensions
+      local function flutter_run_interactive(platform, device_id)
+        local servers = { 'dev', 'prod', 'local' }
+
+        vim.ui.select(servers, {
+          prompt = 'Select environment (' .. platform .. '):',
+          format_item = function(item)
+            return 'Server: ' .. item
+          end,
+        }, function(selected_server)
+          if not selected_server then
+            return
+          end
+
+          vim.ui.input({
+            prompt = 'User Token (Enter to skip): ',
+          }, function(input_token)
+            local token = input_token or ''
+            local flavor = (selected_server == 'prod') and 'prod' or 'dev'
+
+            -- Build the command parts
+            local cmd_parts = {
+              'FlutterRun',
+              '--flavor ' .. flavor,
+              '--dart-define=FLAVOR=' .. flavor,
+              string.format('--dart-define=PLATFORM=%s', platform),
+              string.format('--dart-define=SERVER=%s', selected_server),
+            }
+
+            if device_id then
+              table.insert(cmd_parts, '-d ' .. device_id)
+            end
+
+            if token ~= '' then
+              table.insert(cmd_parts, string.format('--dart-define=DEBUG_USER_TOKEN=%s', token))
+            end
+
+            local full_cmd = table.concat(cmd_parts, ' ')
+
+            print('🚀 Running ' .. platform .. ' on ' .. selected_server .. '...')
+            vim.cmd(full_cmd)
+          end)
+        end)
+      end
+
       vim.keymap.set('n', '<leader>fl', extensions.flutter.commands, { desc = '[F]lutter commands' })
-      vim.keymap.set(
-        'n',
-        '<leader>fd',
-        '<Cmd>FlutterRun -d macos --flavor dev --dart-define=FLAVOR=dev --dart-define=PLATFORM=desktop<CR>',
-        { desc = '[F]lutter Run [D]ev Flavor for Desktop' }
-      )
-      vim.keymap.set(
-        'n',
-        '<leader>fr',
-        '<Cmd>FlutterRun --flavor dev --dart-define=FLAVOR=dev --dart-define=PLATFORM=mobile<CR>',
-        { desc = '[F]lutter Run [D]ev Flavor' }
-      )
+      vim.keymap.set('n', '<leader>fd', function()
+        flutter_run_interactive('desktop', 'macos')
+      end, { desc = '[F]lutter Run [D]esktop (Select Server)' })
+      vim.keymap.set('n', '<leader>fr', function()
+        flutter_run_interactive('mobile', nil)
+      end, { desc = '[F]lutter Run [D]ev Flavor for Mobile' })
       vim.keymap.set(
         'n',
         '<leader>fw',
