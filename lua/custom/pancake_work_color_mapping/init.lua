@@ -23,8 +23,8 @@ local function get_color_map()
   end
 
   for line in file:lines() do
-    -- Matches lines like: final Color grey1 = Color(0xFFFFFFFF);
-    local name, color = line:match('final Color%s+(%w+)%s*=%s*const Color%((0x' .. ('[a-fA-F0-9]'):rep(8) .. ')%)')
+    -- Matches lines like: final Color grey1 = const Color(0xFFFFFFFF);
+    local name, color = line:match('final Color%s+(%w+)%s*=%s*const%s*Color%((0x' .. ('[a-fA-F0-9]'):rep(8) .. ')%)')
     if name and color then
       -- Map from color hex to color name
       color_map[string.upper(color)] = name
@@ -86,7 +86,7 @@ local function get_color_pair_map()
   return M.color_pair_map
 end
 
-function parse_color(line, color_map)
+local function parse_color(line, color_map)
   local last_pos = 1
   local result = {}
 
