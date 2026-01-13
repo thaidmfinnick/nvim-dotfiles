@@ -8,7 +8,7 @@ return {
     },
     build = 'make tiktoken', -- Only on MacOS or Linux
     opts = {
-      model = 'gpt-4.1',
+      model = 'claude-opus-4.5',
       mappings = {
         complete = {
           detail = 'Use @<Tab> or /<Tab> for options.',

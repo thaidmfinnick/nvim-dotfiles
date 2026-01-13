@@ -13,11 +13,11 @@ return {
       group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
       callback = function(event)
         local client = vim.lsp.get_client_by_id(event.data.client_id)
-        -- local filename = vim.api.nvim_buf_get_name(bufnr)
-        -- local file_extension = filename:match '%.([^.]+)$'
-        -- if client and file_extension == 'dart' then
-        --   require('flutter-tools.lsp').attach()
-        -- end
+        local filename = vim.api.nvim_buf_get_name(event.buf)
+        local file_extension = filename:match '%.([^.]+)$'
+        if client and file_extension == 'dart' then
+          require('flutter-tools.lsp').attach()
+        end
 
         local map = function(keys, func, desc)
           vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
@@ -87,6 +87,9 @@ return {
       docker_compose_language_service = {},
       marksman = {},
       bashls = {},
+      vue_ls = {},
+      vtsls = {},
+      tailwindcss = {},
 
       lua_ls = {
         settings = {
