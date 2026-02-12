@@ -19,7 +19,12 @@ vim.keymap.set('n', 't3', '3gt', { noremap = true, silent = true, desc = 'Go to 
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>ql', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>ql', vim.diagnostic.setloclist, { desc = 'Open diagnostic local [Q]uickfix list' })
+vim.keymap.set('n', ']q', '<cmd>lnext<CR>', { desc = 'Next [Q]uickfix item' })
+vim.keymap.set('n', '[q', '<cmd>lprev<CR>', { desc = 'Previous [Q]uickfix item' })
+vim.keymap.set('n', '<leader>qo', '<cmd>lopen<CR>', { desc = 'Open [Q]uickfix window' })
+vim.keymap.set('n', '<leader>qc', '<cmd>lclose<CR>', { desc = 'Close [Q]uickfix window' })
+
 vim.keymap.set('n', '<leader>qf', vim.diagnostic.setqflist, { desc = 'Open all diagnostics [Q]uickfix list' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
