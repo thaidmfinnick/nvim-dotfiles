@@ -129,12 +129,11 @@ return {
   },
   {
     'stevearc/overseer.nvim',
-    ---@module 'overseer'
-    ---@type overseer.SetupOpts
     opts = {},
-    keys = {
-      { '<leader>or', '<cmd>OverseerRun<cr>', desc = 'Overseer Run' },
-      { '<leader>ot', '<cmd>OverseerToggle<cr>', desc = 'Overseer Toggle' },
-    },
+    config = function(_, opts)
+      require('overseer').setup(opts)
+      vim.keymap.set('n', '<leader>or', '<cmd>OverseerRun<cr>', { desc = 'Overseer Run' })
+      vim.keymap.set('n', '<leader>ot', '<cmd>OverseerToggle<cr>', { desc = 'Overseer Toggle' })
+    end,
   },
 }

@@ -78,7 +78,14 @@ return {
               end,
             },
           },
-          lualine_c = { file_info },
+          lualine_c = {
+            file_info,
+            {
+              'overseer',
+              label = '', -- prefix label
+              colored = true, -- colored status
+            },
+          },
           lualine_x = { 'filesize', 'filetype' },
           lualine_y = { 'g:flutter_tools_decorations.app_version', file_length },
           lualine_z = { 'location' },
