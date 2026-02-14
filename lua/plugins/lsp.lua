@@ -24,10 +24,10 @@ return {
         end
 
         --  To jump back, press <C-t>.
-        map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+        map('<leader>gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
 
-        map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-        map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+        map('<leader>gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+        map('<leader>gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
 
         map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
         map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
