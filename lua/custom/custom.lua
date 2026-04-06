@@ -11,4 +11,11 @@ return {
     name = 'custom.pancake_work_intl',
     config = true,
   },
+  {
+    dir = '/Users/admin/Documents/projects/personal/silver-lining.nvim',
+    name = 'custom.silver-lining',
+    config = function()
+      require('silver-lining').setup()
+    end,
+  },
 }
