@@ -1,7 +1,7 @@
 local M = {}
 
 local ns_id = vim.api.nvim_create_namespace 'pancake_work_color_mapping'
-local color_file_path = '/Users/admin/Documents/projects/pancake-work/pancake-work-client/packages/pancake_work_ui/lib/pancake_work_colors.dart'
+local color_file_path = '/Users/admin/Data/projects/pancake-work/pancake-work-client/packages/pancake_work_ui/lib/pancake_work_colors.dart'
 
 M.color_map = nil
 M.color_pair_map = nil

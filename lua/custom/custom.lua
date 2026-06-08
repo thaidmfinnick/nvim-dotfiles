@@ -12,7 +12,7 @@ return {
     config = true,
   },
   {
-    dir = '/Users/admin/Documents/projects/personal/silver-lining.nvim',
+    dir = '/Users/admin/Data/projects/personal/silver-lining.nvim',
     name = 'custom.silver-lining',
     config = function()
       require('silver-lining').setup()

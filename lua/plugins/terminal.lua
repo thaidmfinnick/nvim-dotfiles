@@ -27,7 +27,20 @@ return {
 
     local Terminal = require('toggleterm.terminal').Terminal
     local map = vim.keymap.set
-    local lazygit = Terminal:new { cmd = 'lazygit', hidden = true, direction = 'float' }
+    local lazygit = Terminal:new {
+      cmd = 'lazygit',
+      hidden = true,
+      direction = 'float',
+      float_opts = {
+        border = 'none',
+        width = function()
+          return vim.o.columns
+        end,
+        height = function()
+          return vim.o.lines
+        end,
+      },
+    }
 
     map('n', 'lg', function()
       lazygit:toggle()
