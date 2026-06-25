@@ -58,4 +58,10 @@ vim.keymap.set('n', '<Leader>xc', function()
   vim.fn.setreg('+', filepath) -- write to clippoard
 end, { noremap = true, silent = true, desc = 'Yank file path' })
 
+vim.keymap.set('n', '<Leader>xl', function()
+  local filepath = vim.fn.expand '%:p'
+  local line = vim.fn.line '.'
+  vim.fn.setreg('+', filepath .. ':' .. line) -- write to clipboard
+end, { noremap = true, silent = true, desc = 'Yank file path with line' })
+
 vim.keymap.set('n', '<leader>y', ':%y<CR>', { noremap = true, silent = true, desc = 'Yank entire file' })
