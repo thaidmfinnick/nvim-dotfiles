@@ -5,7 +5,7 @@ return { -- Autoformat
     {
       '<leader>fm',
       function()
-        require('conform').format { async = true, lsp_fallback = true }
+        require('conform').format { async = true, lsp_format = 'fallback', timeout_ms = 5000 }
       end,
       mode = '',
       desc = '[F]ormat buffer',
@@ -17,10 +17,15 @@ return { -- Autoformat
       -- Disable "format_on_save lsp_fallback" for languages that don't
       -- have a well standardized coding style. You can add additional
       -- languages here or re-enable it for the disabled ones.
-      local disable_filetypes = { query = true, cpp = true }
+      --
+      -- swift/kotlin are formatted manually with <leader>fm only.
+      local disable_filetypes = { query = true, cpp = true, swift = true, kotlin = true }
+      if disable_filetypes[vim.bo[bufnr].filetype] then
+        return nil
+      end
       return {
         timeout_ms = 500,
-        lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+        lsp_format = 'fallback',
       }
     end,
     formatters = {
@@ -34,16 +39,12 @@ return { -- Autoformat
     },
     formatters_by_ft = {
       lua = { 'stylua' },
-      dart = { 'dart', 'format' },
-      elixir = { 'mix', 'format' },
-      swift = { 'swift', 'format' },
-      -- Conform can also run multiple formatters sequentially
-      -- python = { "isort", "black" },
-      --
-      -- You can use a sub-list to tell conform to run *until* a formatter
-      -- is found.
-      javascript = { 'prettierd', 'prettier' },
-      vue = { 'prettierd', 'prettier' },
+      dart = { 'dart_format' },
+      elixir = { 'mix' },
+      swift = { 'swiftformat' },
+      kotlin = { 'ktlint' },
+      javascript = { 'prettierd', 'prettier', stop_after_first = true },
+      vue = { 'prettierd', 'prettier', stop_after_first = true },
     },
   },
 }
