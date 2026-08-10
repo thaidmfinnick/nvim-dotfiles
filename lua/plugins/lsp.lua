@@ -90,6 +90,9 @@ return {
       vue_ls = {},
       vtsls = {},
       tailwindcss = {},
+      kotlin_language_server = {
+        filetypes = { 'kotlin' },
+      },
 
       lua_ls = {
         settings = {
@@ -112,6 +115,31 @@ return {
           },
         },
       },
+    }
+
+    -- Configure lsp for support Swift language
+    -- Loads the Swift lsp from inside Xcode, so it is not managed by mason
+    require('lspconfig').sourcekit.setup {
+      cmd = {
+        '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp',
+      },
+      -- c/cpp intentionally left to clangd
+      filetypes = { 'swift', 'objc', 'objcpp' },
+      root_dir = function(filename, _)
+        local util = require 'lspconfig.util'
+
+        return util.root_pattern 'buildServer.json'(filename)
+          or util.root_pattern('*.xcodeproj', '*.xcworkspace')(filename)
+          or util.find_git_ancestor(filename)
+          or util.root_pattern 'Package.swift'(filename)
+      end,
+      capabilities = vim.tbl_deep_extend('force', {}, capabilities, {
+        workspace = {
+          didChangeWatchedFiles = {
+            dynamicRegistration = true,
+          },
+        },
+      }),
     }
 
     require('mason').setup()
