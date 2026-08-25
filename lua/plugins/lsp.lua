@@ -19,6 +19,10 @@ return {
           require('flutter-tools.lsp').attach()
         end
 
+        if client and client:supports_method('textDocument/documentColor') then
+          vim.lsp.document_color.enable(true, { bufnr = event.buf }, { style = 'virtual' })
+        end
+
         local map = function(keys, func, desc)
           vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
         end
