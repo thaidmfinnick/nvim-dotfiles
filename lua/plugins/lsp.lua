@@ -92,6 +92,16 @@ return {
       tailwindcss = {},
       kotlin_language_server = {
         filetypes = { 'kotlin' },
+        root_dir = function(fname)
+          local dir = vim.fs.dirname(fname)
+          return vim.fs.root(dir, { 'settings.gradle', 'settings.gradle.kts' })
+            or vim.fs.root(dir, { 'build.gradle', 'build.gradle.kts', 'pom.xml', 'build.xml' })
+            or vim.fs.root(dir, { '.git' })
+            or dir
+        end,
+        on_new_config = function(new_config, root_dir)
+          new_config.init_options = { storagePath = root_dir }
+        end,
       },
 
       lua_ls = {

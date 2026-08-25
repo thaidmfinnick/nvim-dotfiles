@@ -63,3 +63,11 @@ vim.lsp.config('vtsls', vtsls_config)
 vim.lsp.config('vue_ls', vue_ls_config)
 vim.lsp.config('ts_ls', ts_ls_config)
 vim.lsp.enable { 'vtsls', 'vue_ls' } -- If using `ts_ls` replace `vtsls` to `ts_ls`
+
+vim.lsp.config('kotlin_language_server', {
+  before_init = function(params, config)
+    params.initializationOptions = {
+      storagePath = config.root_dir or vim.fn.stdpath 'cache',
+    }
+  end,
+})
