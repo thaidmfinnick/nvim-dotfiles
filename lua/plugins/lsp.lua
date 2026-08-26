@@ -19,8 +19,11 @@ return {
           require('flutter-tools.lsp').attach()
         end
 
-        if client and client:supports_method('textDocument/documentColor') then
-          vim.lsp.document_color.enable(true, { bufnr = event.buf }, { style = 'virtual' })
+        if client and client:supports_method('textDocument/documentColor') and vim.lsp.document_color then
+          -- nvim 0.12 takes a filter table; 0.11 took a plain bufnr.
+          if not pcall(vim.lsp.document_color.enable, true, { bufnr = event.buf }, { style = 'virtual' }) then
+            pcall(vim.lsp.document_color.enable, true, event.buf, { style = 'virtual' })
+          end
         end
 
         local map = function(keys, func, desc)

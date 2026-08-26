@@ -6,7 +6,23 @@ return {
       vim.g.miniindentscope_disable = true
     end,
     config = function()
-      require('mini.ai').setup { n_lines = 500 }
+      -- Treesitter-backed text objects, using the queries shipped by
+      -- nvim-treesitter-textobjects. mini.ai keeps owning the a/i prefix.
+      local ai_ts = require('mini.ai').gen_spec.treesitter
+      require('mini.ai').setup {
+        n_lines = 500,
+        custom_textobjects = {
+          -- Functions (am/im) and classes (ac/ic) come from
+          -- nvim-treesitter-textobjects; mini.ai keeps its own `f` for
+          -- function *calls*.
+          a = ai_ts { a = '@parameter.outer', i = '@parameter.inner' },
+          o = ai_ts {
+            a = { '@conditional.outer', '@loop.outer' },
+            i = { '@conditional.inner', '@loop.inner' },
+          },
+          C = ai_ts { a = '@comment.outer', i = '@comment.inner' },
+        },
+      }
       require('mini.indentscope').setup {
         options = {
           indent_at_cursor = true,
@@ -35,12 +51,6 @@ return {
       vim.keymap.set('n', '<c-p>', '<Plug>(YankyPreviousEntry)')
       vim.keymap.set('n', '<c-n>', '<Plug>(YankyNextEntry)')
     end,
-  },
-
-  {
-    'RRethy/nvim-treesitter-textsubjects',
-    branch = 'master',
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
   },
 
   {
