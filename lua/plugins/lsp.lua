@@ -169,6 +169,13 @@ return {
 
     require('mason-lspconfig').setup {
       automatic_installation = true,
+      -- mason-lspconfig v2 enables every installed server automatically.
+      -- `ts_ls` and `vtsls` would both attach to TS/JS buffers, which duplicates
+      -- results for requests merged across clients (e.g. telescope `gr`).
+      -- `vue_ls` is enabled explicitly in lua/config/lsp.lua alongside vtsls.
+      automatic_enable = {
+        exclude = { 'ts_ls', 'vetur', 'volar' },
+      },
       handlers = {
         function(server_name)
           local server = servers[server_name] or {}
