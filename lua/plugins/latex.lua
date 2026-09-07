@@ -5,7 +5,10 @@ return {
     -- tag = "v2.15", -- uncomment to pin to a specific release
     init = function()
       -- VimTeX configuration goes here, e.g.
-      vim.g.vimtex_view_method = 'zathura'
+      -- Use macOS Preview.app (no forward/inverse search support)
+      vim.g.vimtex_view_method = 'general'
+      vim.g.vimtex_view_general_viewer = 'open'
+      vim.g.vimtex_view_general_options = '-a Preview @pdf'
 
       -- Quickfix never opens itself; inspect errors with :VimtexErrors (<localleader>le).
       -- (0 = never open automatically, 1 = open + jump, 2 = open, stay put)
