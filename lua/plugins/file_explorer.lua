@@ -56,6 +56,23 @@ return {
 
       keymaps = {
         ['q'] = { 'actions.close', mode = 'n' },
+        -- Open the entry under the cursor with the system default app (Word, Preview, ...)
+        ['gx'] = { 'actions.open_external', mode = 'n' },
+        -- Reveal the entry under the cursor in Finder
+        ['gX'] = {
+          desc = 'Reveal in Finder',
+          mode = 'n',
+          callback = function()
+            local oil = require('oil')
+            local dir = oil.get_current_dir()
+            if not dir then
+              return
+            end
+            local entry = oil.get_cursor_entry()
+            local target = entry and (dir .. entry.name) or dir
+            vim.system({ 'open', '-R', target })
+          end,
+        },
       },
     },
     -- Optional dependencies
