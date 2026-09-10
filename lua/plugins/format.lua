@@ -12,7 +12,7 @@ return { -- Autoformat
     },
   },
   opts = {
-    notify_on_error = false,
+    notify_on_error = true,
     format_on_save = function(bufnr)
       -- Disable "format_on_save lsp_fallback" for languages that don't
       -- have a well standardized coding style. You can add additional
@@ -46,6 +46,17 @@ return { -- Autoformat
         condition = function()
           return vim.fn.executable 'dart' == 1
         end,
+      },
+      -- ktlint's --stdin mode prints the result through printf, so any '%'
+      -- in the source (e.g. "%02x".format(it)) crashes it. Format by path.
+      -- Exit code 1 = unfixable violations remain (always at least
+      -- standard:filename, since conform formats a `.conform.N.Foo.kt` temp
+      -- copy); the fixable ones were still applied, so treat it as success.
+      ktlint = {
+        command = 'ktlint',
+        args = { '--format', '--log-level=none', '$FILENAME' },
+        stdin = false,
+        exit_codes = { 0, 1 },
       },
     },
     formatters_by_ft = {
