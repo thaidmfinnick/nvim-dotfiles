@@ -105,7 +105,7 @@ function M.open(opts)
 end
 
 function M.setup()
-  vim.keymap.set({ 'n', 'v' }, '<leader>go', function()
+  vim.keymap.set({ 'n', 'v' }, 'go', function()
     M.open()
     -- leave visual mode after opening
     if vim.fn.mode():match '^[vV\22]' then
@@ -113,7 +113,7 @@ function M.setup()
     end
   end, { desc = '[G]it [o]pen line(s) on GitHub' })
 
-  vim.keymap.set({ 'n', 'v' }, '<leader>gy', function()
+  vim.keymap.set({ 'n', 'v' }, 'gy', function()
     M.open { copy = true }
     if vim.fn.mode():match '^[vV\22]' then
       vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', false)
