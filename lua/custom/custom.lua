@@ -19,6 +19,12 @@ return {
     config = true,
   },
   {
+    dir = '~/.config/nvim/lua/custom/git_browse',
+    main = 'custom.git_browse',
+    name = 'custom.git_browse',
+    config = true,
+  },
+  {
     dir = '/Users/admin/Data/projects/personal/silver-lining.nvim',
     name = 'custom.silver-lining',
     config = function()
