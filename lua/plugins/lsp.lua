@@ -97,6 +97,18 @@ return {
       vue_ls = {},
       vtsls = {},
       tailwindcss = {},
+      emmet_ls = {
+        -- Restrict to web filetypes so it doesn't pollute others
+        filetypes = { 'css', 'scss', 'html', 'javascriptreact', 'typescriptreact', 'vue', 'svelte' },
+        init_options = {
+          html = {
+            options = {
+              -- For JSX/TSX, use `className` instead of `class`
+              ['jsx.enabled'] = true,
+            },
+          },
+        },
+      },
       kotlin_language_server = {
         filetypes = { 'kotlin' },
         root_dir = function(fname)
