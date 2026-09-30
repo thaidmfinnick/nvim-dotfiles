@@ -66,6 +66,11 @@ return {
               rainbow4 = { fg = colors.green, style = { 'bold' } },
               rainbow5 = { fg = colors.peach, style = { 'bold' } },
               rainbow6 = { fg = colors.flamingo, style = { 'bold' } },
+              -- Diff / Diffview
+              DiffAdd = { bg = '#1f3a2a' },
+              DiffDelete = { fg = '#4a2a33', bg = '#3a1f26' },
+              DiffChange = { bg = '#23293d' },
+              DiffText = { bg = '#2f3f66' },
             }
           end,
         },

@@ -9,6 +9,7 @@ return {
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
       },
+      word_diff = true,
       current_line_blame = true,
       current_line_blame_opts = {
         virt_text = true,
@@ -60,10 +61,37 @@ return {
         map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
         map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
         map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
-        map('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
+        -- Open the diff in a new tab; `q` closes the tab
+        local function diff_in_tab(base)
+          vim.cmd 'tab split'
+          local tab = vim.api.nvim_get_current_tabpage()
+          gitsigns.diffthis(base)
+          vim.defer_fn(function()
+            if not vim.api.nvim_tabpage_is_valid(tab) then
+              return
+            end
+            for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
+              local b = vim.api.nvim_win_get_buf(win)
+              vim.keymap.set('n', 'q', function()
+                pcall(vim.keymap.del, 'n', 'q', { buffer = b })
+                vim.cmd 'tabclose'
+              end, { buffer = b, nowait = true, desc = 'Close diff tab' })
+            end
+          end, 100)
+        end
+        map('n', '<leader>hd', function()
+          diff_in_tab()
+        end, { desc = 'git [d]iff against index' })
         map('n', '<leader>hD', function()
-          gitsigns.diffthis '@'
+          diff_in_tab '@'
         end, { desc = 'git [D]iff against last commit' })
+        -- Review: compare current file against develop
+        map('n', '<leader>hB', function()
+          -- Signs/hunks (]c, <leader>hp...) now relative to develop; run again to reset
+          vim.g.gitsigns_review = not vim.g.gitsigns_review
+          gitsigns.change_base(vim.g.gitsigns_review and 'origin/develop' or nil, true)
+          vim.notify(vim.g.gitsigns_review and 'Gitsigns base: origin/develop' or 'Gitsigns base: index')
+        end, { desc = 'git toggle signs [B]ase origin/develop' })
         -- Toggles
         map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
         map('n', '<leader>tD', gitsigns.toggle_deleted, { desc = '[T]oggle git show [D]eleted' })
@@ -81,6 +109,17 @@ return {
     },
     config = function()
       local opts = {
+        hooks = {
+          -- Focus the diff window instead of the file panel when a view opens
+          view_opened = function(view)
+            vim.defer_fn(function()
+              local win = view.cur_layout and view.cur_layout:get_main_win()
+              if win and win:is_valid() then
+                win:focus()
+              end
+            end, 50)
+          end,
+        },
         keymaps = {
           view = {
             ['q'] = '<cmd>DiffviewClose<CR>', -- Close Diffview
@@ -104,8 +143,9 @@ return {
     end,
     keys = {
       { 'do', '<cmd>DiffviewOpen<cr>', mode = { 'n' }, desc = 'Repo Diffview', nowait = true },
+      { 'dr', '<cmd>DiffviewOpen origin/develop...HEAD<cr>', mode = { 'n' }, desc = 'Review PR (current branch vs develop)' },
       { 'dh', '<cmd>DiffviewFileHistory<cr>', mode = { 'n' }, desc = 'Repo history' },
-      { 'dh', '<cmd>DiffviewFileHistory --follow %<cr>', mode = { 'n' }, desc = 'Current file history' },
+      { 'df', '<cmd>DiffviewFileHistory --follow %<cr>', mode = { 'n' }, desc = 'Current file history' },
       {
         'dl',
         function()
