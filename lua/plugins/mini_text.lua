@@ -42,14 +42,14 @@ return {
     opts = {},
     config = function()
       require('substitute').setup()
-      -- substitution keymap
-      vim.keymap.set('n', 's', require('substitute').operator, { noremap = true, desc = 'Substitute operator' })
-      vim.keymap.set('n', 'ss', require('substitute').line, { noremap = true, desc = 'Substitute line' })
-      vim.keymap.set('x', 's', require('substitute').visual, { noremap = true, desc = 'Substitute visual selection' })
+      -- substitution keymap (<leader>s prefix keeps `s` free for mini.surround)
+      vim.keymap.set('n', '<leader>sx', require('substitute').operator, { noremap = true, desc = 'Substitute operator' })
+      vim.keymap.set('n', '<leader>sxx', require('substitute').line, { noremap = true, desc = 'Substitute line' })
+      vim.keymap.set('x', '<leader>sx', require('substitute').visual, { noremap = true, desc = 'Substitute visual selection' })
 
       -- exchange keymaps
-      vim.keymap.set('n', 'sx', require('substitute.exchange').operator, { noremap = true, desc = 'Exchange operator' })
-      vim.keymap.set('n', 'sxx', require('substitute.exchange').line, { noremap = true, desc = 'Exchange line' })
+      vim.keymap.set('n', '<leader>sX', require('substitute.exchange').operator, { noremap = true, desc = 'Exchange operator' })
+      vim.keymap.set('n', '<leader>sXX', require('substitute.exchange').line, { noremap = true, desc = 'Exchange line' })
       vim.keymap.set('x', 'X', require('substitute.exchange').visual, { noremap = true, desc = 'Exchange visual selection' })
     end,
   },
