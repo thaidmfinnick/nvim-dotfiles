@@ -85,13 +85,34 @@ return {
         map('n', '<leader>hD', function()
           diff_in_tab '@'
         end, { desc = 'git [D]iff against last commit' })
-        -- Review: compare current file against develop
+        -- Default branch: origin/HEAD, else first of develop/main/master that exists on origin
+        local function default_branch()
+          local cwd = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ':h')
+          local function git(...)
+            local r = vim.system({ 'git', '-C', cwd, ... }, { text = true }):wait()
+            return r.code == 0 and vim.trim(r.stdout) or nil
+          end
+          local head = git('symbolic-ref', '--short', 'refs/remotes/origin/HEAD')
+          if head and head ~= '' then
+            return head
+          end
+          for _, name in ipairs { 'develop', 'main', 'master' } do
+            if git('rev-parse', '--verify', '--quiet', 'refs/remotes/origin/' .. name) then
+              return 'origin/' .. name
+            end
+          end
+        end
+        -- Review: compare current file against the default branch
         map('n', '<leader>hB', function()
-          -- Signs/hunks (]c, <leader>hp...) now relative to develop; run again to reset
-          vim.g.gitsigns_review = not vim.g.gitsigns_review
-          gitsigns.change_base(vim.g.gitsigns_review and 'origin/develop' or nil, true)
-          vim.notify(vim.g.gitsigns_review and 'Gitsigns base: origin/develop' or 'Gitsigns base: index')
-        end, { desc = 'git toggle signs [B]ase origin/develop' })
+          -- Signs/hunks (]c, <leader>hp...) now relative to default branch; run again to reset
+          local base = not vim.g.gitsigns_review and default_branch() or nil
+          if not vim.g.gitsigns_review and not base then
+            return vim.notify('No default branch found on origin', vim.log.levels.WARN)
+          end
+          vim.g.gitsigns_review = base ~= nil
+          gitsigns.change_base(base, true)
+          vim.notify('Gitsigns base: ' .. (base or 'index'))
+        end, { desc = 'git toggle signs [B]ase default branch' })
         -- Toggles
         map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
         map('n', '<leader>tD', gitsigns.toggle_deleted, { desc = '[T]oggle git show [D]eleted' })
