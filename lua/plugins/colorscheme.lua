@@ -71,6 +71,8 @@ return {
               DiffDelete = { fg = '#4a2a33', bg = '#3a1f26' },
               DiffChange = { bg = '#23293d' },
               DiffText = { bg = '#2f3f66' },
+              GitSignsDeletePreview = { fg = colors.text, bg = '#3a1f26' },
+              GitSignsDeleteInline = { fg = colors.text, bg = '#5a2a35' },
             }
           end,
         },
