@@ -28,7 +28,9 @@ return {
     dir = '/Users/admin/Data/projects/personal/silver-lining.nvim',
     name = 'custom.silver-lining',
     config = function()
-      require('silver-lining').setup()
+      require('silver-lining').setup {
+        approve_body = '<img width="250" height="250" alt="lgtmhehe" src="https://github.com/user-attachments/assets/03900198-912f-47f3-a524-fe37cdc4343c" />',
+      }
     end,
   },
 }
