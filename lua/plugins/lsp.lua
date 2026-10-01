@@ -185,8 +185,9 @@ return {
       -- `ts_ls` and `vtsls` would both attach to TS/JS buffers, which duplicates
       -- results for requests merged across clients (e.g. telescope `gr`).
       -- `vue_ls` is enabled explicitly in lua/config/lsp.lua alongside vtsls.
+      -- `lexical` is set up manually above; auto-enabling it starts a second client.
       automatic_enable = {
-        exclude = { 'ts_ls', 'vetur', 'volar' },
+        exclude = { 'ts_ls', 'vetur', 'volar', 'lexical' },
       },
       handlers = {
         function(server_name)
