@@ -64,4 +64,16 @@ vim.keymap.set('n', '<Leader>xl', function()
   vim.fn.setreg('+', filepath .. ':' .. line) -- write to clipboard
 end, { noremap = true, silent = true, desc = 'Yank file path with line' })
 
+vim.keymap.set('x', '<Leader>xl', function()
+  local filepath = vim.fn.expand '%:p'
+  local first = vim.fn.line 'v'
+  local last = vim.fn.line '.'
+  if first > last then
+    first, last = last, first
+  end
+  local range = first == last and tostring(first) or (first .. '-' .. last)
+  vim.fn.setreg('+', filepath .. ':' .. range) -- write to clipboard
+  vim.api.nvim_feedkeys(vim.keycode '<Esc>', 'nx', false)
+end, { noremap = true, silent = true, desc = 'Yank file path with line range' })
+
 vim.keymap.set('n', '<leader>y', ':%y<CR>', { noremap = true, silent = true, desc = 'Yank entire file' })
