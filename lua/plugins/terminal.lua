@@ -32,6 +32,15 @@ return {
     map('n', 'lg', function()
       lazygit:toggle()
     end, { desc = 'Toggle LazyGit', noremap = true, silent = true })
+
+    -- Called by lazygit (via `nvim --server $NVIM --remote-expr`) before opening a file,
+    -- so the file lands in the previous window instead of inside the float
+    function _G.LazygitHide()
+      if lazygit:is_open() then
+        lazygit:close()
+      end
+      vim.cmd 'stopinsert'
+    end
     local function focus_term(id)
       local term = require('toggleterm.terminal').get(id)
       term:focus()
