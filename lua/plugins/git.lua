@@ -131,6 +131,14 @@ return {
     config = function()
       local opts = {
         hooks = {
+          -- Show silver-lining drafts inline in diff buffers
+          diff_buf_win_enter = function(bufnr)
+            vim.schedule(function()
+              if package.loaded['silver-lining.comment'] then
+                require('silver-lining.comment').render_drafts(bufnr)
+              end
+            end)
+          end,
           -- Focus the diff window instead of the file panel when a view opens
           view_opened = function(view)
             vim.defer_fn(function()
