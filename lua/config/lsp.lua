@@ -64,6 +64,9 @@ vim.lsp.config('vue_ls', vue_ls_config)
 vim.lsp.config('ts_ls', ts_ls_config)
 vim.lsp.enable { 'vtsls', 'vue_ls' } -- If using `ts_ls` replace `vtsls` to `ts_ls`
 
+-- Puts `kls-classpath` on PATH: kotlin-language-server runs it to get Android AAR classes.
+vim.env.PATH = vim.fs.joinpath(vim.fn.stdpath 'config', 'bin') .. ':' .. vim.env.PATH
+
 vim.lsp.config('kotlin_language_server', {
   before_init = function(params, config)
     params.initializationOptions = {

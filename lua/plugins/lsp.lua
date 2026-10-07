@@ -113,6 +113,10 @@ return {
         filetypes = { 'kotlin' },
         root_dir = function(fname)
           local dir = vim.fs.dirname(fname)
+          local repo = vim.fs.root(dir, { '.git' })
+          if repo and fname:find('/packages/[^/]+/android/') and vim.uv.fs_stat(repo .. '/mobile/android/settings.gradle') then
+            return repo .. '/mobile/android'
+          end
           return vim.fs.root(dir, { 'settings.gradle', 'settings.gradle.kts' })
             or vim.fs.root(dir, { 'build.gradle', 'build.gradle.kts', 'pom.xml', 'build.xml' })
             or vim.fs.root(dir, { '.git' })

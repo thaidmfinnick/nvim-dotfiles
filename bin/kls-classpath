@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# kotlin-language-server classpath hook. KLS runs this in the workspace root and
+# reads a ':'-separated classpath from stdout. For non-Android roots, print nothing
+# so KLS falls back to its own Gradle/Maven resolvers.
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+[ -x ./gradlew ] && grep -qs 'com.android' settings.gradle settings.gradle.kts build.gradle build.gradle.kts || exit 0
+./gradlew -q --console=plain --init-script "$here/kls-classpath.init.gradle" printKlsClasspath 2>/dev/null \
+  | sed -n 's/^KLS_CP=//p' | tr ':' '\n' | awk 'NF && !s[$0]++' | paste -sd: -

@@ -1,0 +1,24 @@
+// Used by `kls-classpath`: prints the compile classpath of every Android project
+// with AARs unpacked to classes jars, which kotlin-language-server cannot do itself.
+allprojects { p ->
+  p.afterEvaluate {
+    if (p.plugins.hasPlugin('com.android.application') || p.plugins.hasPlugin('com.android.library')) {
+      p.tasks.register('printKlsClasspath') {
+        doLast {
+          def names = p.configurations.names.findAll {
+            def n = it.toLowerCase()
+            n.endsWith('compileclasspath') && !n.contains('test')
+          }
+          def name = names.find { it.toLowerCase().contains('debug') } ?: names[0]
+          if (name == null) return
+          def files = p.configurations.getByName(name).incoming.artifactView { v ->
+            v.lenient = true
+            v.attributes { a -> a.attribute(Attribute.of('artifactType', String), 'android-classes-jar') }
+          }.files.files
+          def boot = p.android.bootClasspath.collect { it.absolutePath }
+          println 'KLS_CP=' + (boot + files).join(':')
+        }
+      }
+    }
+  }
+}
