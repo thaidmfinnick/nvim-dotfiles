@@ -163,8 +163,8 @@ return {
 
         return util.root_pattern 'buildServer.json'(filename)
           or util.root_pattern('*.xcodeproj', '*.xcworkspace')(filename)
-          or util.find_git_ancestor(filename)
           or util.root_pattern 'Package.swift'(filename)
+          or util.find_git_ancestor(filename)
       end,
       capabilities = vim.tbl_deep_extend('force', {}, capabilities, {
         workspace = {
